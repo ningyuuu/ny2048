@@ -15,15 +15,26 @@ class Model:
 
   def play(self, dir):
     # [0, 1, 2, 3] = [up, down, left, right]
+    change = False
     reversals = self.get_reversals(dir)
     traversals = self.get_traversals(reversals)
 
     for row in traversals[0]:
       for col in traversals[1]:
         if self.state.is_filled(row, col):
-          self.state.move(row, col, dir)
+          new_change = self.state.move(row, col, dir)
+          change = change or new_change
           # print((row, col))
+    return change
 
+  def make_move(self, dir):
+    if self.play(dir):
+      self.spawn_random()
+
+  def spawn_random(self):
+    row, col = self.state.get_random_empty_cell()
+    num = 2 if random.random() < 0.9 else 4
+    self.state.fill(row, col, num)
 
   def get_reversals(self, dir):
     # code adapted from gabrielecirulli/2048
@@ -31,8 +42,8 @@ class Model:
     # we always search from the "last" piece in each direction
     # -> A B C D search D, C, B, A
     reversals = [
-      [False, False],
       [True, False],
+      [False, False],
       [False, False],
       [False, True]
     ]
@@ -52,8 +63,9 @@ class Model:
     return (row, col)
 
 
-def printr(state):
-  [print(r) for r in state]
+def print_state(x):
+  [print(r) for r in x.state.state]
+  print()
 
 # x = Model()
 # printr(x.state.state)
@@ -61,8 +73,10 @@ def printr(state):
 # printr(x.state.state)
 
 x = Model()
-printr(x.state.state)
-x.play(2)
-printr(x.state.state)
-x.play(3)
-printr(x.state.state)
+print("Make a move: 0: up | 1: down | 2: left | 3: right")
+print_state(x)
+
+while (True):
+  move = int(input())
+  x.make_move(move)
+  print_state(x)
