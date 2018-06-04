@@ -35,9 +35,10 @@ class State:
   def is_filled(self, row, col):
     return self.state[row][col] != 0
 
-  def move(self, row, col, dir):
+  def move(self, row, col, dir, merges):
     # dir: [0, 1, 2, 3] = [up, down, left, right]
     change = False
+    merge = None
     move_col = 0
     move_row = 0
     if (dir == 0):
@@ -66,10 +67,13 @@ class State:
         (new_row + move_row >= 0) and 
         (new_row + move_row <= 3) and
         (self.state[new_row + move_row][new_col + move_col]\
-          == self.state[row][col])):
+          == self.state[row][col]) and
+        # check that target cell has never merged before
+        (new_row + move_row, new_col + move_col) not in merges):
       self.state[new_row + move_row][new_col + move_col] *= 2
       new_col += move_col
       new_row += move_row
+      merge = (new_row, new_col)
       change = True
     else:
       self.state[new_row][new_col] = self.state[row][col]

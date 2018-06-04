@@ -19,10 +19,21 @@ class Model:
     reversals = self.get_reversals(dir)
     traversals = self.get_traversals(reversals)
 
+    # preparetiles here -
+    # my attempt: create an empty list logging all coordinates
+    # that have merged. if the target has previously merged,
+    # do not merge again!
+
+    # this doesn't seem to work, because we are also concerned
+    # WITHIN the move() operation, checking after move() returns
+    # is way too late
+
+    merges = []
+
     for row in traversals[0]:
       for col in traversals[1]:
         if self.state.is_filled(row, col):
-          new_change = self.state.move(row, col, dir)
+          new_change = self.state.move(row, col, dir, merges)
           change = change or new_change
           # print((row, col))
     return change
@@ -42,8 +53,8 @@ class Model:
     # we always search from the "last" piece in each direction
     # -> A B C D search D, C, B, A
     reversals = [
-      [True, False],
       [False, False],
+      [True, False],
       [False, False],
       [False, True]
     ]
@@ -59,6 +70,9 @@ class Model:
       row = row[::-1]
     if (reversals[1]):
       col = col[::-1]
+
+    # print(row)
+    # print(col)
 
     return (row, col)
 
