@@ -73,7 +73,7 @@ class State:
       self.state[new_row + move_row][new_col + move_col] *= 2
       new_col += move_col
       new_row += move_row
-      merge = (new_row, new_col)
+      merges.append((new_row, new_col))
       change = True
     else:
       self.state[new_row][new_col] = self.state[row][col]

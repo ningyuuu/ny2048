@@ -19,14 +19,9 @@ class Model:
     reversals = self.get_reversals(dir)
     traversals = self.get_traversals(reversals)
 
-    # preparetiles here -
-    # my attempt: create an empty list logging all coordinates
-    # that have merged. if the target has previously merged,
-    # do not merge again!
-
-    # this doesn't seem to work, because we are also concerned
-    # WITHIN the move() operation, checking after move() returns
-    # is way too late
+    # TODO: ensure that doubling does not happen twice in a
+    # single cell, i.e. 2 2 4 0 going left should be 4 4 0 0
+    # and not 8 0 0 0
 
     merges = []
 
