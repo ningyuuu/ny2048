@@ -19,10 +19,6 @@ class Model:
     reversals = self.get_reversals(dir)
     traversals = self.get_traversals(reversals)
 
-    # TODO: ensure that doubling does not happen twice in a
-    # single cell, i.e. 2 2 4 0 going left should be 4 4 0 0
-    # and not 8 0 0 0
-
     merges = []
 
     for row in traversals[0]:
@@ -66,26 +62,18 @@ class Model:
     if (reversals[1]):
       col = col[::-1]
 
-    # print(row)
-    # print(col)
-
     return (row, col)
 
+if __name__ == "__main__":
+  def print_state(x):
+    [print(r) for r in x.state.state]
+    print()
 
-def print_state(x):
-  [print(r) for r in x.state.state]
-  print()
-
-# x = Model()
-# printr(x.state.state)
-# x.play(1)
-# printr(x.state.state)
-
-x = Model()
-print("Make a move: 0: up | 1: down | 2: left | 3: right")
-print_state(x)
-
-while (True):
-  move = int(input())
-  x.make_move(move)
+  x = Model()
+  print("Make a move: 0: up | 1: down | 2: left | 3: right")
   print_state(x)
+
+  while (True):
+    move = int(input())
+    x.make_move(move)
+    print_state(x)
